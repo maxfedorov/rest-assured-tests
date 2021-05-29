@@ -11,7 +11,7 @@ import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.notNullValue;
 
 @DisplayName("Put")
-public class PutTest extends RestApiTestBase {
+public class PutTest {
 
     @Test
     @Feature("Rest API")
@@ -21,13 +21,13 @@ public class PutTest extends RestApiTestBase {
         JSONObject requestParams = new JSONObject();
         requestParams.put("name", "John");
         requestParams.put("job", "Accountant");
-        restGiven()
+        new Specs().request()
                 .contentType(JSON)
                 .body(requestParams.toString())
                 .when()
-                .put("/api/users/2")
+                .put("/users/2")
                 .then()
-                .statusCode(200)
+                .spec(Specs.responseSpec)
                 .body("name", is(requestParams.get("name")))
                 .body("job", is(requestParams.get("job")))
                 .body("updatedAt", notNullValue());

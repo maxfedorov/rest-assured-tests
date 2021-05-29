@@ -11,7 +11,7 @@ import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.notNullValue;
 
 @DisplayName("Post")
-public class PostTest extends RestApiTestBase {
+public class PostTest {
 
     @Test
     @Feature("Rest API")
@@ -21,11 +21,11 @@ public class PostTest extends RestApiTestBase {
         JSONObject requestParams = new JSONObject();
         requestParams.put("name", "Alex");
         requestParams.put("job", "Driver");
-        restGiven()
+        new Specs().request()
                 .contentType(JSON)
                 .body(requestParams.toString())
                 .when()
-                .post("/api/users")
+                .post("/users")
                 .then()
                 .statusCode(201)
                 .body("name", is(requestParams.get("name")))
@@ -40,13 +40,12 @@ public class PostTest extends RestApiTestBase {
         JSONObject requestParams = new JSONObject();
         requestParams.put("email", "eve.holt@reqres.in");
         requestParams.put("password", "cityslicka");
-        restGiven()
-                .contentType(JSON)
+        new Specs().request()
                 .body(requestParams.toString())
                 .when()
-                .post("/api/login")
+                .post("/login")
                 .then()
-                .statusCode(200)
+                .spec(Specs.responseSpec)
                 .body("token", is("QpwL5tke4Pnpja7X4"));
     }
 
@@ -56,11 +55,11 @@ public class PostTest extends RestApiTestBase {
     @DisplayName("Failed login")
     void failedLogin() {
         JSONObject requestParams = new JSONObject().put("email", "eve.holt@reqres.in");
-        restGiven()
+        new Specs().request()
                 .contentType(JSON)
                 .body(requestParams.toString())
                 .when()
-                .post("/api/login")
+                .post("/login")
                 .then()
                 .statusCode(400)
                 .body("error", is("Missing password"));
@@ -74,11 +73,11 @@ public class PostTest extends RestApiTestBase {
         JSONObject requestParams = new JSONObject();
         requestParams.put("email", "eve.holt@reqres.in");
         requestParams.put("password", "pistol");
-        restGiven()
+        new Specs().request()
                 .contentType(JSON)
                 .body(requestParams.toString())
                 .when()
-                .post("/api/registration")
+                .post("/registration")
                 .then()
                 .log()
                 .body()

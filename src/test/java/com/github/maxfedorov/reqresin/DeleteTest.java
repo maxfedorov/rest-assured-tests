@@ -6,16 +6,16 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 @DisplayName("Delete")
-public class DeleteTest extends RestApiTestBase {
+public class DeleteTest {
 
     @Test
     @Feature("Rest API")
     @Story("DELETE")
     @DisplayName("Delete user")
     void updateUser() {
-        restGiven()
+        new Specs().request()
                 .when()
-                .delete("/api/users/2")
+                .delete("/users/2")
                 .then()
                 .statusCode(204);
     }

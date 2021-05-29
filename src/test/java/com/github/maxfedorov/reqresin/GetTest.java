@@ -1,7 +1,6 @@
 package com.github.maxfedorov.reqresin;
 
 import com.github.maxfedorov.reqresin.models.Resources;
-import com.github.maxfedorov.reqresin.models.Support;
 import com.github.maxfedorov.reqresin.models.User;
 import com.github.maxfedorov.reqresin.models.UserData;
 import io.qameta.allure.Feature;
@@ -16,18 +15,18 @@ import static org.hamcrest.Matchers.containsString;
 import static org.hamcrest.Matchers.is;
 
 @DisplayName("Get")
-public class GetTest extends RestApiTestBase {
+public class GetTest {
 
     @Test
     @Feature("Rest API")
     @Story("GET")
     @DisplayName("List users")
     void listUsers() {
-        restGiven()
+        new Specs().request()
                 .when()
-                .get("/api/users?page=2")
+                .get("/users?page=2")
                 .then()
-                .statusCode(200)
+                .spec(Specs.responseSpec)
                 .body("page", is(2))
                 .body("total", is(12))
                 .body("support.text", containsString("ReqRes"))
@@ -39,11 +38,11 @@ public class GetTest extends RestApiTestBase {
     @Story("GET")
     @DisplayName("Get single user")
     void getSingleUser() {
-        User user = restGiven()
+        User user = new Specs().request()
                 .when()
-                .get("/api/users/5")
+                .get("/users/5")
                 .then()
-                .statusCode(200)
+                .spec(Specs.responseSpec)
                 .log()
                 .body()
                 .extract().as(User.class);
@@ -54,10 +53,6 @@ public class GetTest extends RestApiTestBase {
         softAssertions.assertThat(data.getFirstName()).isEqualTo("Charles");
         softAssertions.assertThat(data.getLastName()).isEqualTo("Morris");
         softAssertions.assertThat(data.getAvatar()).isEqualTo("https://reqres.in/img/faces/5-image.jpg");
-        Support support = user.getSupport();
-        softAssertions.assertThat(support.getUrl()).isEqualTo("https://reqres.in/#support-heading");
-        softAssertions.assertThat(support.getText()).isEqualTo("To keep ReqRes free, contributions towards server costs are appreciated!");
-        softAssertions.assertAll();
     }
 
     @Test
@@ -65,9 +60,9 @@ public class GetTest extends RestApiTestBase {
     @Story("GET")
     @DisplayName("Get non existing user")
     void getNonExistingUser() {
-        restGiven()
+        new Specs().request()
                 .when()
-                .get("/api/users/100")
+                .get("/users/100")
                 .then()
                 .statusCode(404);
     }
@@ -77,11 +72,11 @@ public class GetTest extends RestApiTestBase {
     @Story("GET")
     @DisplayName("List resources")
     void listResources() {
-        Resources resource = restGiven()
+        Resources resource = new Specs().request()
                 .when()
-                .get("/api/unknown")
+                .get("/unknown")
                 .then()
-                .statusCode(200)
+                .spec(Specs.responseSpec)
                 .log()
                 .body()
                 .extract().as(Resources.class);
@@ -93,9 +88,9 @@ public class GetTest extends RestApiTestBase {
     @Story("GET")
     @DisplayName("List resource not found")
     void listResourceNotFound() {
-        restGiven()
+        new Specs().request()
                 .when()
-                .get("/api/unknown/50")
+                .get("/unknown/50")
                 .then()
                 .statusCode(404);
     }
@@ -105,11 +100,11 @@ public class GetTest extends RestApiTestBase {
     @Story("GET")
     @DisplayName("List resource")
     void listResource() {
-        restGiven()
+        new Specs().request()
                 .when()
-                .get("/api/unknown/2")
+                .get("/unknown/2")
                 .then()
-                .statusCode(200)
+                .spec(Specs.responseSpec)
                 .body(matchesJsonSchemaInClasspath("jsonshemas/resource.json"));
     }
 
