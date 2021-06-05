@@ -1,4 +1,4 @@
-## Rest API test automation for https://reqres.in/
+## Rest API test examples with REST assured for https://reqres.in/
 
 ### Technology Stack
 ![Java](readme/Java.png)
