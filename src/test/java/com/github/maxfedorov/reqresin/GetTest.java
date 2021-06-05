@@ -53,6 +53,7 @@ public class GetTest {
         softAssertions.assertThat(data.getFirstName()).isEqualTo("Charles");
         softAssertions.assertThat(data.getLastName()).isEqualTo("Morris");
         softAssertions.assertThat(data.getAvatar()).isEqualTo("https://reqres.in/img/faces/5-image.jpg");
+        softAssertions.assertAll();
     }
 
     @Test
